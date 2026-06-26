@@ -8,7 +8,7 @@
 // ============================================================
 
 import React, { useState, useEffect, createContext } from 'react';
-import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, Text, ActivityIndicator, StyleSheet, TouchableOpacity } from 'react-native';
 // ActivityIndicator — 旋转的加载圈圈
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -46,7 +46,7 @@ export default function App() {
   if (!dbReady) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#4A90D9" />
+        <ActivityIndicator size="large" color="#FFFFFF" />
         <Text style={styles.loadingText}>启动中...</Text>
       </View>
     );
@@ -67,42 +67,56 @@ export default function App() {
         <Stack.Navigator
           initialRouteName="Home"
           screenOptions={{
-            headerStyle: { backgroundColor: '#4A90D9' },
-            headerTintColor: '#fff',
+            headerStyle: { backgroundColor: '#1A1A1A' },
+            headerTintColor: '#FFFFFF',
             headerTitleStyle: { fontWeight: 'bold' },
           }}
         >
           <Stack.Screen
             name="Home"
             component={HomeScreen}
-            options={{ title: '小千记帐' }}
-          />
-          <Stack.Screen
-            name="AddExpense"
-            component={AddExpenseScreen}
-            options={{ title: '记一笔' }}
-          />
-          <Stack.Screen
-            name="Settings"
-            component={SettingsScreen}
-            options={{ title: '预算设置' }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+	    options={ ({navigation}) => ({
+		title:'小千记帐',
+		headerRight: () => (
+		 <TouchableOpacity
+		   onPress={() => navigation.navigate('Setting')}
+		   style={{
+			   marginRight: 8,
+			   padding: 6,
+			}}
+		 >
+		   <Text style={{ fontSize: 22, color: '#FFFFFF' }}>
+			⚙
+		   </Text>
+		</TouchableOpacity>
+		),
+	})}
+	/>
+	<Stack.Screen
+	  name="AddExpense"
+	  component={AddExpenseScreen}
+	  options={{ title: '记一笔' }}
+	/>
+	<Stack.Screen
+	  name="Settings"
+	  component={SettingsScreen}
+	  options={{ title: '预算设置' }}
+	/>
+      </Stack.Navigator>
+     </NavigationContainer>
     </AppContext.Provider>
-  );
+   );
 }
-
 const styles = StyleSheet.create({
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5F6FA',
+    backgroundColor: '#1A1A1A',
   },
   loadingText: {
     marginTop: 12,
     fontSize: 16,
-    color: '#999',
+    color: '#FFFFFF',
   },
 });
